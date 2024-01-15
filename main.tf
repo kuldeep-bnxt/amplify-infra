@@ -8,7 +8,7 @@ resource "aws_amplify_app" "amplify_app" {
 
 //  oauth_token = "example-token"  # Make sure to hide this in a secure place!
 
-//  access_token = "example"       # Same here, secure this properly!
+  access_token = "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"       # Same here, secure this properly!
 
   build_spec = <<EOF
 version: 0.1
@@ -33,3 +33,31 @@ frontend:
 EOF
 
 }
+
+resource "aws_amplify_backend_environment" "amplify_backend" {
+  app_id           = aws_amplify_app.amplify_app.id
+  environment_name = "dev"
+
+  deployment_artifacts = "app-deployment"
+  stack_name           = "amplify-app-deployment"
+}
+
+resource "aws_amplify_branch" "master" {
+  app_id      = aws_amplify_app.amplify_app.id
+  branch_name = "main"
+  
+  environment_variables = {
+    TEST = "AMPLIFY_APP"
+  }
+}
+
+//resource "aws_amplify_domain_association" "domain_association" {
+//  app_id      = aws_amplify_app.amplify_app.id
+//  domain_name = var.domain_name
+//  wait_for_verification = false
+//
+//  sub_domain {
+//    branch_name = aws_amplify_branch.master.branch_name
+//    prefix      = "main"
+//  }
+//}
