@@ -108,13 +108,13 @@ resource "aws_iam_role_policy_attachment" "api_gateway_access_policy" {
 
 # App Gateway
 resource "aws_api_gateway_rest_api" "my_api" {
-  name = "my-test-api"
+  name = var.api_gateway_name
 }
 
 resource "aws_api_gateway_resource" "endpoint_resource" {
   rest_api_id = aws_api_gateway_rest_api.my_api.id
   parent_id   = aws_api_gateway_rest_api.my_api.root_resource_id
-  path_part   = "/test"  # Dynamic path based on generated endpoint name
+  path_part   = var.api_gateway_path  # Dynamic path based on generated endpoint name
 }
 
 resource "aws_api_gateway_method" "method" {
